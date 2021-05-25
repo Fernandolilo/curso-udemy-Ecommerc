@@ -14,12 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.systempro.domain.enums.TipoCliente;
 
 @Entity
 public class Cliente implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
@@ -34,7 +34,10 @@ public class Cliente implements Serializable {
 	//o nome do campo que correponde a  endereço  @OneToMany(mappedBy = "cliente")
 	//sendo assim a coluna cliente_id estará mostrando qual o cliente é em endereço. 
 	//relacioando assim o cliente ao endereço.
+	//@JsonManagedReference proteção para serialização ciclica, estou dizendo que 
+	//o cliente pode buscar os esndereços
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
