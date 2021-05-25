@@ -20,11 +20,7 @@ public class CategoriaResource {
 	@RequestMapping(value ="/{id}",method = RequestMethod.GET)
 	//pathvariable é um tratamento para informa que a busca esta sendo feira por meio do ID.
 	public ResponseEntity<Categoria> find (@PathVariable Integer id){
-		
-		// fazendo a chamada do serviço com o metodo criado de busca
 		Categoria obj = service.find(id);
-		
-		// retorna um response entity com o metodo ok, caso tudo ocorra bem!
 		return ResponseEntity.ok().body(obj);
 	
 	}
