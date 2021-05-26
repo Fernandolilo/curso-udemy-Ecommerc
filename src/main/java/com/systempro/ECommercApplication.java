@@ -13,6 +13,7 @@ import com.systempro.domain.Cidade;
 import com.systempro.domain.Cliente;
 import com.systempro.domain.Endereco;
 import com.systempro.domain.Estado;
+import com.systempro.domain.ItemPedido;
 import com.systempro.domain.Pagamento;
 import com.systempro.domain.PagamentoComBoleto;
 import com.systempro.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.systempro.repositories.CidadeRepository;
 import com.systempro.repositories.ClienteRepository;
 import com.systempro.repositories.EnderecoRepository;
 import com.systempro.repositories.EstadoRepository;
+import com.systempro.repositories.ItemPedidoRepository;
 import com.systempro.repositories.PagamentoRepository;
 import com.systempro.repositories.PedidoRepository;
 import com.systempro.repositories.ProdutoRepository;
@@ -56,6 +58,9 @@ public class ECommercApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	
 	public static void main(String[] args) {
@@ -122,6 +127,18 @@ public class ECommercApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 1, 2000.00, 0.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 2, 80.00, 0.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 1, 800.00, 100.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 
