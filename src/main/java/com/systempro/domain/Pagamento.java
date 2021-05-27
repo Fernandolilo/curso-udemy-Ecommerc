@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.systempro.domain.enums.EstadoPagamento;
 
 @Entity
@@ -31,8 +31,10 @@ public abstract class Pagamento implements Serializable {
 
 	// estamos fazendo a proteção de serialização ciclica, @JsonBackReference
 	// o clinte não irar serializar pedido, apenas os pedidos buscará seus cliente.
+	// estamos retirando a anotação @JsonBackReference e substituindo por
+	// @JsonIgnore, devido ter se mostrado mais eficiente, na hora de serializar um atributo.
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId

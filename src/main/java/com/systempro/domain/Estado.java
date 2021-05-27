@@ -10,36 +10,43 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Estado implements Serializable{
+public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	
-	
-	//mapeamento muitos para um no caso estamos mapeando estados e cidades
-	// como um estado tem muitas cidades, dentro da class Estado chamamos uma lista de cidades
-	// criando assim muitas cidades para um estado =>private List<Cidade> cidades = new ArrayList<>();
-	//@OneToMany(mappedBy = "estado") como na class cidade foi mapeado muitos para um, aqui esta sendo feito 
-	//um mapeamento reverso, en cidade mapeamos no atributo etado =>private Estado estado; por isto (mappedBy = "estado")
-	//@JsonManagedReference -> proteção contra serialização ciclica, 
-	//estou dizendo para o estado que não pode serializar a cidade.
-	
-	@JsonBackReference
+
+	// mapeamento muitos para um no caso estamos mapeando estados e cidades
+	// como um estado tem muitas cidades, dentro da class Estado chamamos uma lista
+	// de cidades
+	// criando assim muitas cidades para um estado =>private List<Cidade> cidades =
+	// new ArrayList<>();
+	// @OneToMany(mappedBy = "estado") como na class cidade foi mapeado muitos para
+	// um, aqui esta sendo feito
+	// um mapeamento reverso, en cidade mapeamos no atributo etado =>private Estado
+	// estado; por isto (mappedBy = "estado")
+	// @JsonManagedReference -> proteção contra serialização ciclica,
+	// estou dizendo para o estado que não pode serializar a cidade.
+	// neste caso estamos mudando a proteçao de serialização ciclica para o
+	// JsonIgnore, ele fará com que o atributo private List<Cidade> cidades = new
+	// ArrayList<>(); seja ignorado na hora de buscar estados. efetuando assim a
+	// busca de estados e suas cidades e não cidades e seus estados
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "estado")
 	private List<Cidade> cidades = new ArrayList<>();
-	
-	public Estado () {
+
+	public Estado() {
 	}
 
 	// no contrutor com parametro não pode ser posto listas por este motivo
-	//private List<Cidade> cidades = new ArrayList<>(); não entra no construtor.
-	
+	// private List<Cidade> cidades = new ArrayList<>(); não entra no construtor.
+
 	public Estado(Integer id, String nome) {
 		super();
 		this.id = id;
@@ -94,7 +101,5 @@ public class Estado implements Serializable{
 	public void setCidades(List<Cidade> cidades) {
 		this.cidades = cidades;
 	}
-	
-	
-	
+
 }

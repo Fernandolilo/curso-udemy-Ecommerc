@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable {
@@ -33,16 +32,21 @@ public class Pedido implements Serializable {
 	// transiente,
 	// quando for salvar o pedido e pagamento dele.
 	// mappedBy = "pedido") => esta mapeando o pagamento e o pedido.
-
 	// tratando serializaçao ciclica, a class pedido ira seralizar os cliente,
-	// porem os cliente não irá serializar os pedidos.
-	@JsonManagedReference
+	// porem os cliente não irá serializar os pedidos. pela anotação
+	// @JsonManagedReference, estamos retiando a anotação e lado pagamento será
+	// colocado o JsonIgnore, para que pedido conheça seus pagamentos porem os
+	// pagamentos não conheça seus pedido
+
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 
 	// tratando serializaçao ciclica, a class pedido ira seralizar os cliente,
 	// porem os cliente não irá serializar os pedidos.
-	@JsonManagedReference
+	// @JsonManagedReference, estamos retiando a anotação e lado cliente será
+	// colocado o JsonIgnore, para que pedido conheça seus clientes porem os
+	// pagamentos não conheça seus pedidos
+	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;

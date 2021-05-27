@@ -9,38 +9,43 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Endereco implements Serializable{
+public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String bairro;
 	private String cep;
-	
-	//relacionamento muitos para um, por tanto deste lado estará o @ManyToOne
-	//podendo acrecer muitos endereços para um unico cliente.
-	//o nome do campo que correponde a tabela cliente, na tabela endereço é @JoinColumn(name= "cliente_id")
-	//sendo assim a coluna cliente_id estará mostrando qual o cliente é em endereço
-	//@JsonBackReference proteção contra serialização ciclica, 
-	//estou dizendo que os endereços não pode buscar os clientes.
-	
-	@JsonBackReference
+
+	// relacionamento muitos para um, por tanto deste lado estará o @ManyToOne
+	// podendo acrecer muitos endereços para um unico cliente.
+	// o nome do campo que correponde a tabela cliente, na tabela endereço é
+	// @JoinColumn(name= "cliente_id")
+	// sendo assim a coluna cliente_id estará mostrando qual o cliente é em endereço
+	// @JsonBackReference proteção contra serialização ciclica,
+	// estou dizendo que os endereços não pode buscar os clientes.
+	// neste caso estamos fazendo a troca da anotação @JsonBackReference,
+	// que por sua vez não deixava o atributo seralizar o endereço, por sua o
+	// cliente sabe qual é seu endereço, porem o endereço não deve saber quem é seu
+	// cliente.
+
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name= "cliente_id")
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
-	
+
 	@ManyToOne
-	@JoinColumn(name= "cidade_id")
+	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
-	
-	public Endereco () {
+
+	public Endereco() {
 	}
 
 	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
@@ -144,6 +149,5 @@ public class Endereco implements Serializable{
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
-	
 
 }

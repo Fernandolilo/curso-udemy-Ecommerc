@@ -9,28 +9,29 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
-public class Cidade implements Serializable{
+public class Cidade implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	
-	//no mapeamento muitos para um, como são muitas cidades para apenas um estado
-	//chama a class estado, no singular => estado apenas um estado pertence as muitas cidades
-	//a anotação  	@ManyToOne => muitas public class Cidade para um private Estado estado;
-	//@JoinColumn(name = "estado_id") 
-	//esta dendo definido o nome da chave estrangeira no banco de dados da tabela cidade 
-	//@JsonManagedReference ->proteção ciclica, a cidade esta buscando s estado, 
-	//estou deixando a ciade serializar o estado.
-	
-	@JsonManagedReference
+
+	// no mapeamento muitos para um, como são muitas cidades para apenas um estado
+	// chama a class estado, no singular => estado apenas um estado pertence as
+	// muitas cidades
+	// a anotação @ManyToOne => muitas public class Cidade para um private Estado
+	// estado;
+	// @JoinColumn(name = "estado_id")
+	// esta dendo definido o nome da chave estrangeira no banco de dados da tabela
+	// cidade
+	// @JsonManagedReference ->proteção ciclica, a cidade esta buscando o estado,
+	// estou deixando a cidade serializar o estado. retiramos a anotação
+	// @JsonManagedReference, protegendo assim o outro lado com o JsonIgnore, 
+
 	@ManyToOne
-	@JoinColumn(name = "estado_id") 
+	@JoinColumn(name = "estado_id")
 	private Estado estado;
 
 	public Cidade() {

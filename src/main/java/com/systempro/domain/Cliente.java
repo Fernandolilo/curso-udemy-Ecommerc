@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.systempro.domain.enums.TipoCliente;
 
 @Entity
@@ -38,7 +37,7 @@ public class Cliente implements Serializable {
 	//@JsonManagedReference proteção para serialização ciclica, estou dizendo que 
 	//o cliente pode buscar os esndereços
 	
-	@JsonManagedReference
+
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -58,7 +57,7 @@ public class Cliente implements Serializable {
 	// estamos fazendo a proteção de serialização ciclica, 	@JsonBackReference
 	// o clinte não irar serializar pedido, apenas os pedidos buscará seus cliente.
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
