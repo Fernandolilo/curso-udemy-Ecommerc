@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.systempro.domain.enums.EstadoPagamento;
 
 @Entity
@@ -21,16 +22,22 @@ public abstract class Pagamento implements Serializable {
 	@Id
 	private Integer id;
 	private Integer estado;
-	
-	
-	//relacionamento de um para um 	@OneToOne, entre pagamento e pedido, 
-	//detro de pagamento será apresentado o campo pedido_id => 	@JoinColumn(name = "pedido_id")
-	//para garantir que i ID de pedido e pagamento sejam o mesmo e colocado esta anotação => @MapsId
+
+	// relacionamento de um para um @OneToOne, entre pagamento e pedido,
+	// detro de pagamento será apresentado o campo pedido_id => @JoinColumn(name =
+	// "pedido_id")
+	// para garantir que i ID de pedido e pagamento sejam o mesmo e colocado esta
+	// anotação => @MapsId
+
+	// estamos fazendo a proteção de serialização ciclica, @JsonBackReference
+	// o clinte não irar serializar pedido, apenas os pedidos buscará seus cliente.
+
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId
 	private Pedido pedido;
-	
+
 	public Pagamento() {
 	}
 
@@ -89,6 +96,5 @@ public abstract class Pagamento implements Serializable {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	
-	
+
 }

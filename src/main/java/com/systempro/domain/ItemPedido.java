@@ -5,21 +5,29 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-@Entity
-public class ItemPedido implements Serializable{
-	private static final long serialVersionUID = 1L;
-	
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	//quando é feito um atributo de uma outra class em JPA é preciso ir na clas e colocar a anotação 
-	//@Embedable para dizer que esta class é um subtipo.
-	// @EmbeddedId é uma chave composta por isto se faz uso desta anotação por ser um identificador embutido
+@Entity
+public class ItemPedido implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// quando é feito um atributo de uma outra class em JPA é preciso ir na clas e
+	// colocar a anotação
+	// @Embedable para dizer que esta class é um subtipo.
+	// @EmbeddedId é uma chave composta por isto se faz uso desta anotação por ser
+	// um identificador embutido
+	// @JsonIgnore tratamento de serialização ciclica, neste caso estamos utilizado
+	// o JsonIgnore pois seu papel e fazer ser ignorado na hora da busca por pedido
+	// ou produto
+
+	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
-	
+
 	private Double preco;
-	private Integer quantidade;	
+	private Integer quantidade;
 	private Double desconto;
-	
+
 	public ItemPedido() {
 	}
 
@@ -31,11 +39,13 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 		this.desconto = desconto;
 	}
-	
+
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
-	
+
+
 	public Produto getProduto() {
 		return id.getProduto();
 	}
@@ -96,6 +106,5 @@ public class ItemPedido implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }
