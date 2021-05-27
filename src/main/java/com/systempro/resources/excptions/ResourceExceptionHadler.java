@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.systempro.services.exceptions.DataIntegrityException;
 import com.systempro.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
@@ -20,6 +21,14 @@ public class ResourceExceptionHadler {
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), 
 				e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	//este é um tratamento de exceptions para tratar deleção de categorias com produtos.
+	@ExceptionHandler(DataIntegrityException.class)
+	public ResponseEntity<StandardError> dataIntegrityException(DataIntegrityException e, HttpServletRequest request){
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), 
+				e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
 }
