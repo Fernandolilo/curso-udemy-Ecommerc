@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -19,48 +20,49 @@ import com.systempro.domain.enums.TipoCliente;
 
 @Entity
 public class Cliente implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
-	
-	//relacionamento muitos para um, por tanto deste lado estará o @OneToMany
-	//sendo um unico cliente para muitos muitos endereços para.
-	//o nome do campo que correponde a  endereço  @OneToMany(mappedBy = "cliente")
-	//sendo assim a coluna cliente_id estará mostrando qual o cliente é em endereço. 
-	//relacioando assim o cliente ao endereço.
-	//@JsonManagedReference proteção para serialização ciclica, estou dizendo que 
-	//o cliente pode buscar os esndereços
-	
 
-	@OneToMany(mappedBy = "cliente")
+	// relacionamento muitos para um, por tanto deste lado estará o @OneToMany
+	// sendo um unico cliente para muitos muitos endereços para.
+	// o nome do campo que correponde a endereço @OneToMany(mappedBy = "cliente")
+	// sendo assim a coluna cliente_id estará mostrando qual o cliente é em
+	// endereço.
+	// relacioando assim o cliente ao endereço.
+	// @JsonManagedReference proteção para serialização ciclica, estou dizendo que
+	// o cliente pode buscar os esndereços
+	// cascade = CascadeType.ALL esta anotação, serve pra refletir em cascata tudo o
+	// que ocorrer no cliente
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
-	
-	
-	//Set é um conjunto e não aceita repetição, etão para este conjunto de Strings 
+
+	// Set é um conjunto e não aceita repetição, etão para este conjunto de Strings
 	// desta manteira garante que não haverá repetição.
-	//no caso estamos criando uma entidade fraca, não estará acrecida de ID, pois não haverá necessidade.
-	//@ElementCollection cria a tabela
-	//@CollectionTable(name =" TELEFONE") //nomeaia a tabela 
-	//NESTE CASO IRÁ CRIAR O CLIENTE_ID EM TELEFONE
-		
+	// no caso estamos criando uma entidade fraca, não estará acrecida de ID, pois
+	// não haverá necessidade.
+	// @ElementCollection cria a tabela
+	// @CollectionTable(name =" TELEFONE") //nomeaia a tabela
+	// NESTE CASO IRÁ CRIAR O CLIENTE_ID EM TELEFONE
+
 	@ElementCollection
-	@CollectionTable(name =" TELEFONE")
+	@CollectionTable(name = " TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
-	
-	// estamos fazendo a proteção de serialização ciclica, 	@JsonBackReference
+	// estamos fazendo a proteção de serialização ciclica, @JsonBackReference
 	// o clinte não irar serializar pedido, apenas os pedidos buscará seus cliente.
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
+
 	public Cliente() {
 	}
 
@@ -70,7 +72,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = (tipo==null) ? null :tipo.getCod();
+		this.tipo = (tipo == null) ? null : tipo.getCod();
 	}
 
 	@Override
@@ -161,5 +163,5 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	
+
 }
