@@ -106,7 +106,7 @@ public class ECommercApplication implements CommandLineRunner{
 		estadoReposytory.saveAll(Arrays.asList(est1 , est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Fernando da Silva", "fernando.nandotania@hotmail.com", "36906855832", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Fernando da Silva", "fernando.nandotania@hotmail.com", "96520275026", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("91234-1234", "4545-4000"));
 		
 		Endereco e1 = new Endereco(null, "Rua Silva Tele", "13", "Apto 15 bloco 3","Vila formosa", "01234-5", cli1, c1);
