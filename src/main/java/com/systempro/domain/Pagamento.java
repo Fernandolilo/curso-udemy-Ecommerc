@@ -11,9 +11,14 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.systempro.domain.enums.EstadoPagamento;
 
 @Entity
+//metodo para tratamento de tipo de sub class para instaciar um pagamento, 
+//no corpo sa inserção sera indicado um @type, 
+//apontado para qual tipo de pagamento que será feito
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 //mapeamento de herança neste caso não será gerado o tabelão, será gerado uma tabela para cada sub class
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
@@ -32,7 +37,8 @@ public abstract class Pagamento implements Serializable {
 	// estamos fazendo a proteção de serialização ciclica, @JsonBackReference
 	// o clinte não irar serializar pedido, apenas os pedidos buscará seus cliente.
 	// estamos retirando a anotação @JsonBackReference e substituindo por
-	// @JsonIgnore, devido ter se mostrado mais eficiente, na hora de serializar um atributo.
+	// @JsonIgnore, devido ter se mostrado mais eficiente, na hora de serializar um
+	// atributo.
 
 	@JsonIgnore
 	@OneToOne

@@ -5,9 +5,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.systempro.domain.enums.EstadoPagamento;
 
 @Entity
+//apontando a serialização do tipo pagamento com boleto, 
+//no campo @type de pagamento, na inserção de pedido
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	
