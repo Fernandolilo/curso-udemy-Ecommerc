@@ -46,7 +46,7 @@ public class Pedido implements Serializable {
 	// @JsonManagedReference, estamos retiando a anotação e lado cliente será
 	// colocado o JsonIgnore, para que pedido conheça seus clientes porem os
 	// pagamentos não conheça seus pedidos
-	
+
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -146,4 +146,11 @@ public class Pedido implements Serializable {
 		this.itens = itens;
 	}
 
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
+	}
 }
