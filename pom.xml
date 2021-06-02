@@ -15,7 +15,8 @@
 	<name>E-commerc</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
+		<target>1.8</target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -64,6 +65,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			
 		</plugins>
 	</build>
 	<repositories>
