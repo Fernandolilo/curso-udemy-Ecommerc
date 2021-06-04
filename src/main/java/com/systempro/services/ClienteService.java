@@ -23,7 +23,7 @@ import com.systempro.domain.enums.TipoCliente;
 import com.systempro.repositories.ClienteRepository;
 import com.systempro.repositories.EnderecoRepository;
 import com.systempro.security.UserSS;
-import com.systempro.services.exceptions.AutorizationException;
+import com.systempro.services.exceptions.AuthorizationException;
 import com.systempro.services.exceptions.DataIntegrityException;
 import com.systempro.services.exceptions.ObjectNotFoundException;
 
@@ -45,7 +45,7 @@ public class ClienteService {
 		
 		UserSS user = UserService.authenticated();
 		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-			throw new AutorizationException("Acesso negado");
+			throw new AuthorizationException("Acesso negado");
 		}
 		
 		Optional<Cliente> obj = repo.findById(id);
