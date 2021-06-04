@@ -18,9 +18,12 @@ import com.systempro.domain.Cliente;
 import com.systempro.domain.Endereco;
 import com.systempro.domain.dto.ClienteDTO;
 import com.systempro.domain.dto.ClienteNewDTO;
+import com.systempro.domain.enums.Perfil;
 import com.systempro.domain.enums.TipoCliente;
 import com.systempro.repositories.ClienteRepository;
 import com.systempro.repositories.EnderecoRepository;
+import com.systempro.security.UserSS;
+import com.systempro.services.exceptions.AutorizationException;
 import com.systempro.services.exceptions.DataIntegrityException;
 import com.systempro.services.exceptions.ObjectNotFoundException;
 
@@ -35,8 +38,16 @@ public class ClienteService {
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AutorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(
 				() -> new ObjectNotFoundException("Objeto não encontrado!: Id: " + "Tipo: " + Cliente.class.getName()));
